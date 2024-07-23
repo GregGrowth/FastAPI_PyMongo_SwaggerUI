@@ -47,3 +47,7 @@ def delete_one_eleve(id):
 @router.delete("/many/{item}")
 def delete_many_eleve(item):
     return eleve_service.delete_many(item)
+
+@router.get("/classe/{idclasse}")
+def read_eleve_classe_choix(idclasse):
+    return eleve_service.read_eleve_classe_choix(idclasse)
