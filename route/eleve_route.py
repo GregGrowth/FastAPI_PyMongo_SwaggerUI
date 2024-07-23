@@ -12,7 +12,7 @@ router = APIRouter(
 def get_one_eleve(id):
     return eleve_service.get_one(id)
 
-# Ajout d'un fonction permettant d'afficher plusieurs elements de la BDD 
+# Ajout d'un fonction permettant d'afficher plusieurs elements de la BDD
 @router.get("/")
 def get_all_eleve():
     return eleve_service.get_all()
@@ -38,7 +38,7 @@ def update_one_eleve(filter, newValue):
 def update_many_eleve(filter, newValue):
     return eleve_service.update_many(filter, newValue)
 """
-# Ajout d'un fonction permettant de supprimer un element de la BDD
+# Ajout d'un fonction permettant de supprimer un element de la BDD 
 @router.delete("/one/{id}")
 def delete_one_eleve(id):
     return eleve_service.delete_one(id)
