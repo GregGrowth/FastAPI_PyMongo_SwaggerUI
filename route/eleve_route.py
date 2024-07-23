@@ -12,7 +12,7 @@ router = APIRouter(
 def get_one_eleve(id):
     return eleve_service.get_one(id)
 
-# Ajout d'un fonction permettant d'afficher plusieurs elements de la BDD
+# Ajout d'un fonction permettant d'afficher plusieurs elements de la BDD 
 @router.get("/")
 def get_all_eleve():
     return eleve_service.get_all()
