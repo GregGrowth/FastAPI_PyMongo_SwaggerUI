@@ -9,6 +9,11 @@ def get_one(id: str):
     results = collection.find_one({"_id": ObjectId(id)}, {"_id": 0})
     return results
 
+# Fonction permettant d'afficher les notes d'un eleve
+def get_note_eleve(ideleve: str):
+    results = collection.find({"ideleve": ideleve}, {"_id": 0})
+    return list(results)
+
 # Fonction permettant d'afficher plusieurs elements de la BDD
 def get_all():
     results = collection.find({}, {"_id": 0})

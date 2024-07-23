@@ -38,7 +38,7 @@ def update_one_eleve(filter, newValue):
 def update_many_eleve(filter, newValue):
     return eleve_service.update_many(filter, newValue)
 """
-# Ajout d'un fonction permettant de supprimer un element de la BDD 
+# Ajout d'un fonction permettant de supprimer un element de la BDD
 @router.delete("/one/{id}")
 def delete_one_eleve(id):
     return eleve_service.delete_one(id)
