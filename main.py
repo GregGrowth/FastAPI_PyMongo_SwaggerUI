@@ -13,6 +13,7 @@ app.include_router(note_route.router)
 app.include_router(professeur_route.router)
 app.include_router(trimestre_route.router)
 
+"""
 # Fonction permettant d'ouvrir notre appli FastAPI
 def open_docs():
     webbrowser.open_new("http://127.0.0.1:8000")
@@ -22,3 +23,4 @@ def open_docs():
 if __name__ == "__main__":
     threading.Timer(2.0, open_docs).start()
     uvicorn.run(app, host="127.0.0.1", port=8000)
+"""

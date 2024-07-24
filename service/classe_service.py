@@ -9,6 +9,43 @@ def get_one(id: str):
     results = collection.find_one({"_id": ObjectId(id)}, {"_id": 0})
     return results
 
+# Fonction permettatn d'afficher les eleves par classe
+def get_eleve_by_classe():
+    results = collection.aggregate([
+        # On garde uniquement les elements qui nous interessent pour l'affichage des eleves par classe
+        {
+            "$project": {"_id": 0, "prof": 0}
+        },
+        # On effectue un LEFT OUTTER JOIN avec la table `eleve`
+        {
+            "$lookup":{
+                "from": "eleve",
+                "localField": "id",
+                "foreignField": "classe",
+                "as": "eleve_by_classe"
+            }
+        },
+        # On décompose le resultats du lookup pour pouvoir plus facilement les manipuler par la suite
+        {
+            "$unwind": "$eleve_by_classe"
+        },
+        # On garde uniquement les elements qui nous interessent pour l'affichage des eleves par classe
+        {
+            "$project": {"id": 0, "eleve_by_classe": {"_id": 0, "classe": 0, "id": 0, "date_naissance": 0, "adresse": 0, "sexe": 0}}
+        },
+        # On regroupe le resultats par classe
+        {
+            "$group":
+            {
+                "_id": {"classe": "$nom"},
+                "list_eleves": {
+                    "$push": {"nom": "$eleve_by_classe.nom", "prenom": "$eleve_by_classe.prenom"}
+                }
+            }
+        }
+    ])
+    return list(results)
+
 # Fonction permettant d'afficher plusieurs elements de la BDD
 def get_all():
     results = collection.find({}, {"_id": 0})
