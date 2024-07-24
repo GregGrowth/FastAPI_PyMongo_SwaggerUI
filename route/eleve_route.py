@@ -48,6 +48,7 @@ def delete_one_eleve(id):
 def delete_many_eleve(item):
     return eleve_service.delete_many(item)
 
+# Ajout d'une fonction permettant d'afficher les élèves d'une classe selon l'id
 @router.get("/classe/{idclasse}")
 def read_eleve_classe_choix(idclasse):
     return eleve_service.read_eleve_classe_choix(idclasse)
