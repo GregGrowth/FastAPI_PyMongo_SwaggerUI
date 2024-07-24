@@ -47,3 +47,8 @@ def delete_one_classe(id):
 @router.delete("/many/{item}")
 def delete_many_classe(item):
     return classe_service.delete_many(item)
+
+@router.get("/q3")
+async def read_eleve_classe_choix(id: int):
+    eleve_classe_choix = classe_service.find({"classe": id}, {"_id": 0})
+    return list(eleve_classe_choix)

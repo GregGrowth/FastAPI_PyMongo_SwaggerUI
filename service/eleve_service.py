@@ -45,3 +45,8 @@ def delete_one(id: str):
 def delete_many(filter: dict):
     results = collection.delete_many(filter)
     return results
+
+# Fonction permettant d'afficher les eleves d'une classe
+def read_eleve_classe_choix(idclasse: str):
+    results = collection.find({"classe": idclasse}, {"_id": 0})
+    return list(results)

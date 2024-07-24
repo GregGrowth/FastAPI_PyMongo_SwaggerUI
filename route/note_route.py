@@ -12,6 +12,11 @@ router = APIRouter(
 def get_one_note(id):
     return note_service.get_one(id)
 
+# Ajout d'un fonction permettant d'afficher les notes d'un eleve
+@router.get("/eleve/{ideleve}")
+def get_note_eleve(ideleve):
+    return note_service.get_note_eleve(ideleve)
+
 # Ajout d'un fonction permettant d'afficher plusieurs elements de la BDD
 @router.get("/")
 def get_all_note():
