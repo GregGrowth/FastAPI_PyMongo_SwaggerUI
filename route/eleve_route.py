@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import eleve_service
+from schema.eleve_schema import EleveUpdateSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -30,14 +31,17 @@ def create_one_eleve(item):
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")
 def create_many_eleve(item):
-    return eleve_service.creat_many(item)
+    return eleve_service.create_many(item)
+
+# Ajout d'une fonction permettant de mettre a jour la classe d'un eleve de la BDD
+@router.patch("/one/{id_eleve}", response_model=dict)
+def update_one_eleve(id_eleve, update: EleveUpdateSchema):
+    update_dict = update.dict(exclude_unset=True)   # On exclut les donnees de type None (= donnees non renseignees)
+    results = eleve_service.update_one(id_eleve, update_dict)
+    return {"modified_count": results.modified_count}
+
 
 """
-# Ajout d'une fonction permettant de mettre a jour un element de la BDD
-@router.patch("/one")
-def update_one_eleve(filter, newValue):
-    return eleve_service.update_one(filter, newValue)
-
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
 @router.patch("/many")
 def update_many_eleve(filter, newValue):

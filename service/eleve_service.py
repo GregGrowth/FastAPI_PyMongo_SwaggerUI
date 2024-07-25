@@ -29,12 +29,12 @@ def create_many(item: dict):
     results = collection.insert_many(item)
     return results
 
-"""
-# Fonction permettant de mettre a jour un element de la BDD
-def update_one(filter, newValue):
-    results = collection.update_one(filter, newValue)
+# Fonction permettant de mettre a jour la classe d'un eleve de la BDD
+def update_one(id_eleve: str, update: dict):
+    results = collection.update_one({"id": id_eleve}, {"$set": update})
     return results
 
+"""
 # Fonction permettant de mettre a jour plusieurs elements de la BDD
 def update_many(filter, newValue):
     results = collection.update_many(filter, newValue)

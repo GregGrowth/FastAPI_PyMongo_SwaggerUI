@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import professeur_service
+from schema.professeur_schema import ProfesseurUpdateSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -30,14 +31,16 @@ def create_one_professeur(item):
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")
 def create_many_professeur(item):
-    return professeur_service.creat_many(item)
+    return professeur_service.create_many(item)
+
+# Ajout d'une fonction permettant de mettre a jour l'adresse' d'un professeur de la BDD
+@router.patch("/one/{id_prof}", response_model=dict)
+def update_one_professeur(id_prof, update: ProfesseurUpdateSchema):
+    update_dict = update.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = professeur_service.update_one(id_prof, update_dict)
+    return {"modified_count": results.modified_count}
 
 """
-# Ajout d'une fonction permettant de mettre a jour un element de la BDD
-@router.patch("/one")
-def update_one_professeur(filter, newValue):
-    return professeur_service.update_one(filter, newValue)
-
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
 @router.patch("/many")
 def update_many_professeur(filter, newValue):
