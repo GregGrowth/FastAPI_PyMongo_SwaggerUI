@@ -45,3 +45,27 @@ def delete_one(id: str):
 def delete_many(filter: dict):
     results = collection.delete_many(filter)
     return results
+
+
+# Fonction permettatn d'afficher les eleves par classe
+def get_eleve_by_classe():
+    results = collection.aggregate([{
+        "$project": {"_id": 0, "prof": 0}
+    },
+        {
+            "$lookup": {
+                "from": "eleve",
+                "localField": "id",
+                "foreignField": "classe",
+                "as": "eleve_by_classe"
+            }
+        },
+        {
+            "$unwind": "$eleve_by_classe"
+        },
+        {
+            "$project": {"id": 0, "eleve_by_classe": {"_id": 0, "classe": 0, "id": 0, "date_naissance": 0, "sexe": 0,
+                                                      "adresse": 0}}
+        }
+    ])
+    return list(results)

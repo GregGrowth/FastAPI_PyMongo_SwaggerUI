@@ -47,3 +47,8 @@ def delete_one_note(id):
 @router.delete("/many/{item}")
 def delete_many_note(item):
     return note_service.delete_many(item)
+
+@router.get("/par_professeur/{professeur_id}")
+def get_eleve_notes_par_prof(professeur_id: str):
+    resultats = note_service.get_eleve_notes_par_prof(professeur_id)
+    return {"resultats": resultats}

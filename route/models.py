@@ -1,5 +1,6 @@
 
-from pydantic import BaseModel,constr
+from pydantic import BaseModel,constr,Field
+from typing import Annotated
 
 #Fichier modele pour définir les données dans chaque collection
 class Classe(BaseModel):
@@ -8,7 +9,7 @@ class Classe(BaseModel):
     prof: str
 
 class Eleve(BaseModel):
-    id: constr(min_length=1, max_length=1)
+    id: str = constr (min_length=1, max_length=1)
     nom: str
     prenom: str
     classe: str

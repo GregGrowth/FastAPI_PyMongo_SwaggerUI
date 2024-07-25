@@ -23,7 +23,7 @@ pwd_encoded = quote_plus(pwd)
 
 # Consolidation de l'uri de connexion
 uri = f"mongodb+srv://{user_encoded}:{pwd_encoded}@{cluster}.mongodb.net/"
-# print(uri)
+print(uri)
 
 # Creation d'une instance de la classe MongoManager
 mongo_client = MongoClient(uri, server_api=ServerApi('1'), tls=True)
