@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import classe_service
+from schema.classe_schema import ClasseUpdateSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -30,14 +31,16 @@ def create_one_classe(item):
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")
 def create_many_classe(item):
-    return classe_service.creat_many(item)
+    return classe_service.create_many(item)
+
+# Ajout d'une fonction permettant de mettre a jour le nom d'une classe de la BDD
+@router.patch("/one/{id_classe}", response_model=dict)
+def update_one_classe(id_classe: str, update: ClasseUpdateSchema):
+    update_dict = update.dict(exclude_unset=True)   # On exclut les donnees de type None (= donnees non renseignees)
+    results = classe_service.update_one(id_classe, update_dict)
+    return {"modified_count": results.modified_count}
 
 """
-# Ajout d'une fonction permettant de mettre a jour un element de la BDD
-@router.patch("/one")
-def update_one_classe(filter, newValue):
-    return classe_service.update_one(filter, newValue)
-
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
 @router.patch("/many")
 def update_many_classe(filter, newValue):

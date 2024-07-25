@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import matiere_service
+from schema.matiere_schema import MatiereUpdateSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -25,14 +26,16 @@ def create_one_matiere(item):
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")
 def create_many_matiere(item):
-    return matiere_service.creat_many(item)
+    return matiere_service.create_many(item)
+
+# Ajout d'une fonction permettant de mettre le nom d'une matiere de la BDD
+@router.patch("/one/{id_matiere}")
+def update_one_matiere(id_matiere, update: MatiereUpdateSchema):
+    update_dict = update.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = matiere_service.update_one(id_matiere, update_dict)
+    return {"modified_count": results.modified_count}
 
 """
-# Ajout d'une fonction permettant de mettre a jour un element de la BDD
-@router.patch("/one")
-def update_one_matiere(filter, newValue):
-    return matiere_service.update_one(filter, newValue)
-
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
 @router.patch("/many")
 def update_many_matiere(filter, newValue):
