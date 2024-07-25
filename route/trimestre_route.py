@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from service import trimestre_service
-from schema.trimestre_schema import TrimestreUpdateSchema
+from schema.trimestre_schema import TrimestreUpdateSchema, TrimestreInsertSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -19,9 +19,11 @@ def get_all_trimestre():
     return trimestre_service.get_all()
 
 # Ajout d'une fonction permettant d'inserer un element de la BDD
-@router.post("/one")
-def create_one_trimestre(item):
-    return trimestre_service.create_one(item)
+@router.post("/one", response_model=dict)
+def create_one_trimestre(item: TrimestreInsertSchema):
+    item_dict = item.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = trimestre_service.create_one(item_dict)
+    return {"acknowledged": str(results.acknowledged)}
 
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")

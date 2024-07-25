@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from service import eleve_service
-from schema.eleve_schema import EleveUpdateSchema
+from schema.eleve_schema import EleveUpdateSchema, EleveInsertSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -24,9 +24,11 @@ def get_all_eleve():
     return eleve_service.get_all()
 
 # Ajout d'une fonction permettant d'inserer un element de la BDD
-@router.post("/one")
-def create_one_eleve(item):
-    return eleve_service.create_one(item)
+@router.post("/one", response_model=dict)
+def create_one_eleve(item: EleveInsertSchema):
+    item_dict = item.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = eleve_service.create_one(item_dict)
+    return {"acknowledged": str(results.acknowledged)}
 
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")

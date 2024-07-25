@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from service import classe_service
-from schema.classe_schema import ClasseUpdateSchema
+from schema.classe_schema import ClasseUpdateSchema, ClasseInsertSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -24,9 +24,11 @@ def get_all_classe():
     return classe_service.get_all()
 
 # Ajout d'une fonction permettant d'inserer un element de la BDD
-@router.post("/one")
-def create_one_classe(item):
-    return classe_service.create_one(item)
+@router.post("/one", response_model=dict)
+def create_one_classe(item: ClasseInsertSchema):
+    item_dict = item.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = classe_service.create_one(item_dict)
+    return {"acknowledged": str(results.acknowledged)}
 
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")
