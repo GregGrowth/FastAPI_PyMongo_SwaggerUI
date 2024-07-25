@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from service import matiere_service
-from schema.matiere_schema import MatiereUpdateSchema
+from schema.matiere_schema import MatiereUpdateSchema, MatiereInsertSchema
+from typing import List
+
 
 # Initailisation du router
 router = APIRouter(
@@ -19,28 +21,39 @@ def get_all_matiere():
     return matiere_service.get_all()
 
 # Ajout d'une fonction permettant d'inserer un element de la BDD
-@router.post("/one")
-def create_one_matiere(item):
-    return matiere_service.create_one(item)
+@router.post("/one", response_model=dict)
+def create_one_matiere(item: MatiereInsertSchema):
+    item_dict = item.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = matiere_service.create_one(item_dict)
+    return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
-@router.post("/many")
-def create_many_matiere(item):
-    return matiere_service.create_many(item)
+@router.post("/many", response_model=dict)
+def create_many_matiere(item: List[MatiereInsertSchema]):
+    item_dict = []
+    # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
+    for i in range(len(item)):
+        item_dict.append(item[i].dict(exclude_unset=True))
+    results = matiere_service.create_many(item_dict)
+    return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de mettre le nom d'une matiere de la BDD
-@router.patch("/one/{id_matiere}")
+@router.patch("/one/{id_matiere}", response_model=dict)
 def update_one_matiere(id_matiere, update: MatiereUpdateSchema):
     update_dict = update.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
     results = matiere_service.update_one(id_matiere, update_dict)
     return {"modified_count": results.modified_count}
 
-"""
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many")
-def update_many_matiere(filter, newValue):
-    return matiere_service.update_many(filter, newValue)
-"""
+@router.patch("/many", response_model=dict)
+def update_many_matiere(item: List[MatiereUpdateSchema]):
+    item_dict = []
+    # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
+    for i in range(len(item)):
+        item_dict.append(item[i].dict(exclude_unset=True))
+    results = matiere_service.update_many(item_dict)
+    return {"acknowledged": results.acknowledged}
+
 # Ajout d'une fonction permettant de supprimer un element de la BDD
 @router.delete("/one/{id}")
 def delete_one_matiere(id):

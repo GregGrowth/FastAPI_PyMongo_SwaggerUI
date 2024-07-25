@@ -1,9 +1,7 @@
-from fastapi import APIRouter,HTTPException
+from fastapi import APIRouter
 from service import professeur_service
-from schema.professeur_schema import ProfesseurUpdateSchema
-from schema.professeur_schema import Q1
+from schema.professeur_schema import ProfesseurUpdateSchema, ProfesseurInsertSchema
 from typing import List
-
 
 # Initailisation du router
 router = APIRouter(
@@ -27,14 +25,21 @@ def get_all_professeur():
     return professeur_service.get_all()
 
 # Ajout d'une fonction permettant d'inserer un element de la BDD
-@router.post("/one")
-def create_one_professeur(item):
-    return professeur_service.create_one(item)
+@router.post("/one", response_model=dict)
+def create_one_professeur(item: ProfesseurInsertSchema):
+    item_dict = item.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = professeur_service.create_one(item_dict)
+    return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
-@router.post("/many")
-def create_many_professeur(item):
-    return professeur_service.create_many(item)
+@router.post("/many", response_model=dict)
+def create_many_professeur(item: List[ProfesseurInsertSchema]):
+    item_dict = []
+    # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
+    for i in range(len(item)):
+        item_dict.append(item[i].dict(exclude_unset=True))
+    results = professeur_service.create_many(item_dict)
+    return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de mettre a jour l'adresse' d'un professeur de la BDD
 @router.patch("/one/{id_prof}", response_model=dict)
@@ -43,12 +48,16 @@ def update_one_professeur(id_prof, update: ProfesseurUpdateSchema):
     results = professeur_service.update_one(id_prof, update_dict)
     return {"modified_count": results.modified_count}
 
-"""
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many")
-def update_many_professeur(filter, newValue):
-    return professeur_service.update_many(filter, newValue)
-"""
+@router.patch("/many", response_model=dict)
+def update_many_professeur(item: List[ProfesseurUpdateSchema]):
+    item_dict = []
+    # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
+    for i in range(len(item)):
+        item_dict.append(item[i].dict(exclude_unset=True))
+    results = professeur_service.update_many(item_dict)
+    return {"acknowledged": results.acknowledged}
+
 # Ajout d'une fonction permettant de supprimer un element de la BDD
 @router.delete("/one/{id}")
 def delete_one_professeur(id):
@@ -58,12 +67,3 @@ def delete_one_professeur(id):
 @router.delete("/many/{item}")
 def delete_many_professeur(item):
     return professeur_service.delete_many(item)
-
-# Ajout de la Q avec schéma
-@router.get("/q1_liste_professeur/all_professeur__schema", response_model=List[Q1])
-def get_all_professeur():
-    professeurs = professeur_service.get_all()
-    if professeurs:
-        return professeurs
-    raise HTTPException(status_code=404, detail="Ca marche pas chef")
-
