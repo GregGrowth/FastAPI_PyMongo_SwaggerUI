@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from service import note_service
+from schema.note_schema import NoteUpdateSchema
 
 # Initailisation du router
 router = APIRouter(
@@ -30,14 +31,17 @@ def create_one_note(item):
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
 @router.post("/many")
 def create_many_note(item):
-    return note_service.creat_many(item)
+    return note_service.create_many(item)
+
+
+# Ajout d'une fonction permettant de mettre a jour un element de la BDD
+@router.patch("/one/{id_note}")
+def update_one_note(id_note: str, update: NoteUpdateSchema):
+    update_dict = update.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
+    results = note_service.update_one(id_note, update_dict)
+    return {"modified_count": results.modified_count}
 
 """
-# Ajout d'une fonction permettant de mettre a jour un element de la BDD
-@router.patch("/one")
-def update_one_note(filter, newValue):
-    return note_service.update_one(filter, newValue)
-
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
 @router.patch("/many")
 def update_many_note(filter, newValue):
