@@ -51,3 +51,7 @@ def delete_many_eleve(item):
 @router.get("/classe/{idclasse}")
 def read_eleve_classe_choix(idclasse):
     return eleve_service.read_eleve_classe_choix(idclasse)
+
+@router.get("/par_classe")
+def get_eleve_by_classe():
+    return eleve_service.get_eleve_by_classe()

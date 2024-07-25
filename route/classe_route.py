@@ -6,11 +6,11 @@ router = APIRouter(
     prefix="/classe",
     tags=["Classe"]
 )
-
+'''
 # Ajout d'un fonction permettant d'afficher un element de la BDD
 @router.get("/{id}")
 def get_one_classe(id):
-    return classe_service.get_one(id)
+    return classe_service.get_one(id)'''
 
 # Ajout d'un fonction permettant d'afficher plusieurs elements de la BDD
 @router.get("/")
@@ -48,7 +48,8 @@ def delete_one_classe(id):
 def delete_many_classe(item):
     return classe_service.delete_many(item)
 
-@router.get("/q3")
-async def read_eleve_classe_choix(id: int):
-    eleve_classe_choix = classe_service.find({"classe": id}, {"_id": 0})
-    return list(eleve_classe_choix)
+
+# Ajout d'une fonction permettant d'afficher les eleves par classe
+@router.get("/eleve_by_classe")
+def get_eleve_by_classe():
+    return classe_service.get_eleve_by_classe()

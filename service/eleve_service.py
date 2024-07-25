@@ -50,3 +50,27 @@ def delete_many(filter: dict):
 def read_eleve_classe_choix(idclasse: str):
     results = collection.find({"classe": idclasse}, {"_id": 0})
     return list(results)
+
+# Fonction permettant d'afficher les eleves par classe
+def get_eleve_by_classe():
+    pipeline = [
+        {
+            "$project": {"_id": 0, "nom": 1, "prenom": 1, "classe": 1}
+        },
+        {
+            "$lookup": {
+                "from": "classe",
+                "localField": "classe",
+                "foreignField": "id",
+                "as": "eleve_by_classe"
+            }
+        },
+        {
+            "$unwind": "$eleve_by_classe"
+        },
+        {
+            "$project": {"classe": 0, "eleve_by_classe": {"_id": 0, "prof": 0, "id": 0}}
+        }
+    ]
+    results = collection.aggregate(pipeline)
+    return list(results)

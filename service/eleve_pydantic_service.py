@@ -1,5 +1,6 @@
 from db import database
 from route.models import Eleve
+from route.models import Classe
 from typing import List
 
 
