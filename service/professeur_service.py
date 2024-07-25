@@ -9,6 +9,43 @@ def get_one(id: str):
     results = collection.find_one({"_id": ObjectId(id)}, {"_id": 0})
     return results
 
+# Fonction permettant d'afficher les eleves et leur note selon un professeur
+def get_eleve_note_by_professeur():
+    results = collection.aggregate([
+        # On garde uniquement les elements qui nous interessent pour l'affichage des eleves et leur note selon un professeur
+        {
+            "$project": {"_id": 0, "date_naissance": 0, "adresse": 0, "sexe": 0}
+        },
+        # On effectue un LEFT OUTTER JOIN avec la table `note`
+        {
+            "$lookup":{
+                "from": "note",
+                "localField": "id",
+                "foreignField": "idprof",
+                "as": "eleve_by_prof"
+            }
+        },
+        # On décompose le resultats du lookup pour pouvoir plus facilement les manipuler par la suite
+        {
+            "$unwind": "$eleve_by_prof"
+        },
+        {
+            "$project": {"id": 0, "eleve_by_prof": {"_id": 0, "idnotes": 0, "idprof": 0, "date_saisie": 0, "idclasse": 0, "idmatiere": 0, "idtrimestre": 0, "avis": 0, "avancement": 0}}
+        },
+        # On regroupe le resultats par professeur
+        {
+            "$group":
+                {
+                    "_id": {"nom_professeur": "$nom", "prenom_professeur": "$prenom"},
+                    "list_eleve_note": {
+                        "$push": {"ideleve": "$eleve_by_prof.ideleve", "note": "$eleve_by_prof.note"}
+                    },
+
+                }
+        }
+    ])
+    return list(results)
+
 # Fonction permettant d'afficher plusieurs elements de la BDD
 def get_all():
     results = collection.find({}, {"_id": 0})
@@ -24,12 +61,12 @@ def create_many(item: dict):
     results = collection.insert_many(item)
     return results
 
-"""
-# Fonction permettant de mettre a jour un element de la BDD
-def update_one(filter, newValue):
-    results = collection.update_one(filter, newValue)
+# Fonction permettant de mettre a jour l'adresse' d'un professeur de la BDD
+def update_one(id_prof: str, update: dict):
+    results = collection.update_one({"id": id_prof}, {"$set": update})
     return results
 
+"""
 # Fonction permettant de mettre a jour plusieurs elements de la BDD
 def update_many(filter, newValue):
     results = collection.update_many(filter, newValue)

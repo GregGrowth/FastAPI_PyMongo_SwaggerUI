@@ -9,6 +9,11 @@ def get_one(id: str):
     results = collection.find_one({"_id": ObjectId(id)}, {"_id": 0})
     return results
 
+# Fonction permettant d'afficher les notes d'un eleve
+def get_note_choose_eleve(ideleve: str):
+    results = collection.find({"ideleve": ideleve}, {"_id": 0})
+    return list(results)
+
 # Fonction permettant d'afficher plusieurs elements de la BDD
 def get_all():
     results = collection.find({}, {"_id": 0})
@@ -24,12 +29,12 @@ def create_many(item: dict):
     results = collection.insert_many(item)
     return results
 
-"""
 # Fonction permettant de mettre a jour un element de la BDD
-def update_one(filter, newValue):
-    results = collection.update_one(filter, newValue)
+def update_one(id_note: str, update: dict):
+    results = collection.update_one({"idnotes": id_note}, {"$set": update})
     return results
 
+"""
 # Fonction permettant de mettre a jour plusieurs elements de la BDD
 def update_many(filter, newValue):
     results = collection.update_many(filter, newValue)
