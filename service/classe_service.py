@@ -1,5 +1,6 @@
 from db import database
 from bson import ObjectId
+from typing import List,Dict
 
 # Selectionner la base de donnees (BDD)
 collection = database["classe"]
@@ -109,3 +110,10 @@ def get_eleve_by_classe():
         }
     ])
     return list(results)
+
+# Fonction permettant d'afficher les eleves par classe
+
+def get_eleve_by_classe_schema() -> List[Dict]:
+    results = collection.find({}, {"_id": 0})
+    eleves = list(results)  # Convertir en liste pour une meilleure manipulation
+    return eleves
