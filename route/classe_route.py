@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 from service import classe_service
 from schema.classe_schema import ClasseUpdateSchema, ClasseInsertSchema
+from typing import List
 
 # Initailisation du router
 router = APIRouter(
@@ -28,12 +29,17 @@ def get_all_classe():
 def create_one_classe(item: ClasseInsertSchema):
     item_dict = item.dict(exclude_unset=True)  # On exclut les donnees de type None (= donnees non renseignees)
     results = classe_service.create_one(item_dict)
-    return {"acknowledged": str(results.acknowledged)}
+    return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant d'inserer plusieurs elements de la BDD
-@router.post("/many")
-def create_many_classe(item):
-    return classe_service.create_many(item)
+@router.post("/many", response_model=dict)
+def create_many_classe(item: List[ClasseInsertSchema]):
+    item_dict = []
+    # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
+    for i in range(len(item)):
+        item_dict.append(item[i].dict(exclude_unset=True))
+    results = classe_service.create_many(item_dict)
+    return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de mettre a jour le nom d'une classe de la BDD
 @router.patch("/one/{id_classe}", response_model=dict)
@@ -42,12 +48,16 @@ def update_one_classe(id_classe: str, update: ClasseUpdateSchema):
     results = classe_service.update_one(id_classe, update_dict)
     return {"modified_count": results.modified_count}
 
-"""
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many")
-def update_many_classe(filter, newValue):
-    return classe_service.update_many(filter, newValue)
-"""
+@router.patch("/many", response_model=dict)
+def update_many_classe(item: List[ClasseUpdateSchema]):
+    item_dict = []
+    # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
+    for i in range(len(item)):
+        item_dict.append(item[i].dict(exclude_unset=True))
+    results = classe_service.update_many(item_dict)
+    return {"acknowledged": results.acknowledged}
+
 # Ajout d'une fonction permettant de supprimer un element de la BDD
 @router.delete("/one/{id}")
 def delete_one_classe(id):

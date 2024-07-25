@@ -2,7 +2,7 @@ from pydantic import BaseModel, constr
 from typing import Optional
 
 # Schema pour structurer les donnees pour la fonction Insert
-class ProfesseurSchemaInsert(BaseModel):
+class ProfesseurInsertSchema(BaseModel):
     id: str = constr(min_length=1, max_length=1)
     nom: str = constr(min_length=1)
     prenom: str = constr(min_length=1)
