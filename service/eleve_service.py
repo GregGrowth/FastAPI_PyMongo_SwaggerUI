@@ -9,6 +9,11 @@ def get_one(id: str):
     results = collection.find_one({"_id": ObjectId(id)}, {"_id": 0})
     return results
 
+# Fontion permettant d'afficher les eleves selon le chois d'une classe
+def get_eleve_choose_classe(id :str):
+    results = collection.find({"classe": id}, {"_id": 0})
+    return list(results)
+
 # Fonction permettant d'afficher plusieurs elements de la BDD
 def get_all():
     results = collection.find({}, {"_id": 0})
@@ -45,32 +50,3 @@ def delete_one(id: str):
 def delete_many(filter: dict):
     results = collection.delete_many(filter)
     return results
-
-# Fonction permettant d'afficher les eleves d'une classe
-def read_eleve_classe_choix(idclasse: str):
-    results = collection.find({"classe": idclasse}, {"_id": 0})
-    return list(results)
-
-# Fonction permettant d'afficher les eleves par classe
-def get_eleve_by_classe():
-    pipeline = [
-        {
-            "$project": {"_id": 0, "nom": 1, "prenom": 1, "classe": 1}
-        },
-        {
-            "$lookup": {
-                "from": "classe",
-                "localField": "classe",
-                "foreignField": "id",
-                "as": "eleve_by_classe"
-            }
-        },
-        {
-            "$unwind": "$eleve_by_classe"
-        },
-        {
-            "$project": {"classe": 0, "eleve_by_classe": {"_id": 0, "prof": 0, "id": 0}}
-        }
-    ]
-    results = collection.aggregate(pipeline)
-    return list(results)
