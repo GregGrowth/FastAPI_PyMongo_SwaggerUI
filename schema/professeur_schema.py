@@ -17,3 +17,11 @@ class ProfesseurUpdateSchema(BaseModel):
     date_naissance: Optional[str] = None
     adresse: Optional[str] = None
     sexe: Optional[str] = None
+
+class Q1(BaseModel):
+    id: str
+    nom: str
+    prenom: str
+    date_naissance: str
+    adresse: str
+    sexe: str

@@ -11,3 +11,4 @@ class ClasseInsertSchema(BaseModel):
 class ClasseUpdateSchema(BaseModel):
     nom: Optional[str] = None
     prof: Optional[str] = None
+

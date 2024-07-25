@@ -20,5 +20,7 @@ class NoteInsertSchema(BaseModel):
     avis: Optional[str]
     avancement: Optional[str]
 
+'''
 class NoteSchemaInsertId(NoteSchemaInsert):
     idnotes: str
+'''

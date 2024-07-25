@@ -1,8 +1,11 @@
 from fastapi import APIRouter
 from service import eleve_service
 from schema.eleve_schema import EleveUpdateSchema
+from schema.eleve_schema import Q3
+from typing import List
+from fastapi import HTTPException
 
-# Initailisation du router
+# Initialisation du router
 router = APIRouter(
     prefix="/eleve",
     tags=["Eleve"]
@@ -56,4 +59,11 @@ def delete_one_eleve(id):
 @router.delete("/many/{item}")
 def delete_many_eleve(item):
     return eleve_service.delete_many(item)
+
+@router.get("/q3_eleve_choose_classe_schema/{idclasse}", response_model=List[Q3])
+def read_eleve_classe_Q3(idclasse: str):
+    eleves = eleve_service.read_eleve_classe_Q3(idclasse)
+    if eleves:
+        return eleves
+    raise HTTPException(status_code=404, detail="L'ID de la classe n'existe pas")
 

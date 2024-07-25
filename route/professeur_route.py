@@ -1,6 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter,HTTPException
 from service import professeur_service
 from schema.professeur_schema import ProfesseurUpdateSchema
+from schema.professeur_schema import Q1
+from typing import List
+
 
 # Initailisation du router
 router = APIRouter(
@@ -55,3 +58,12 @@ def delete_one_professeur(id):
 @router.delete("/many/{item}")
 def delete_many_professeur(item):
     return professeur_service.delete_many(item)
+
+# Ajout de la Q avec schéma
+@router.get("/q1_liste_professeur/all_professeur__schema", response_model=List[Q1])
+def get_all_professeur():
+    professeurs = professeur_service.get_all()
+    if professeurs:
+        return professeurs
+    raise HTTPException(status_code=404, detail="Ca marche pas chef")
+
