@@ -9,6 +9,11 @@ def get_one(id: str):
     results = collection.find_one({"_id": ObjectId(id)}, {"_id": 0})
     return results
 
+# Fontion permettant d'afficher les eleves selon le chois d'une classe
+def get_eleve_choose_classe(id :str):
+    results = collection.find({"classe": id}, {"_id": 0})
+    return list(results)
+
 # Fonction permettant d'afficher plusieurs elements de la BDD
 def get_all():
     results = collection.find({}, {"_id": 0})
