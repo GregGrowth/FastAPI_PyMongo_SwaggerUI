@@ -113,7 +113,3 @@ def get_eleve_by_classe():
 
 # Fonction permettant d'afficher les eleves par classe
 
-def get_eleve_by_classe_schema() -> List[Dict]:
-    results = collection.find({}, {"_id": 0})
-    eleves = list(results)  # Convertir en liste pour une meilleure manipulation
-    return eleves

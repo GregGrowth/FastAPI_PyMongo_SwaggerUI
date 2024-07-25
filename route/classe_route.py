@@ -1,6 +1,6 @@
 from fastapi import APIRouter,HTTPException
 from service import classe_service
-from schema.classe_schema import ClasseUpdateSchema,Q2
+from schema.classe_schema import ClasseUpdateSchema
 from typing import List
 
 # Initailisation du router
@@ -58,10 +58,3 @@ def delete_many_classe(item):
     return classe_service.delete_many(item)
 
 
-# Ajout d'une fonction permettant d'afficher les eleves par classe
-@router.get("/q2_eleve_by_classe_schema/all_classe", response_model=List[Q2])
-def get_eleve_by_classe():
-    eleves = classe_service.get_eleve_by_classe()
-    if eleves:
-        return eleves
-    raise HTTPException(status_code=404, detail="Ca marche pas chef")
