@@ -4,7 +4,7 @@ import uvicorn
 import webbrowser
 import threading
 
-# Initialiation de l'application avec FastAPI
+# Initialition de l'application avec FastAPI
 app = FastAPI()
 app.include_router(classe_route.router)
 app.include_router(eleve_route.router)
