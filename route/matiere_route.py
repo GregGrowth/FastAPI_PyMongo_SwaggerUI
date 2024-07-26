@@ -45,7 +45,7 @@ def update_one_matiere(id_matiere, update: MatiereUpdateSchema):
     return {"modified_count": results.modified_count}
 
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many/{filter}", response_model=dict)
+@router.patch("/many", response_model=dict)
 def update_many_matiere(filter: dict, item: List[MatiereUpdateSchema]):
     item_dict = []
     # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
