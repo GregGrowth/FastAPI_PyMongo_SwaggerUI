@@ -49,9 +49,3 @@ def delete_one(id: str):
 def delete_many(filter: dict):
     results = collection.delete_many(filter)
     return results
-
-# Fonction pour la Q3 avec schéma
-def read_eleve_classe_Q3(idclasse: str) -> List[Dict]:
-    results = collection.find({"classe": idclasse}, {"_id": 0})
-    eleves = list(results)  # Convertir en liste pour une meilleure manipulation
-    return eleves
