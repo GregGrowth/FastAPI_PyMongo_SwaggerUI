@@ -61,7 +61,7 @@ def update_many_eleve(item: List[EleveUpdateSchema]):
 
 # Ajout d'une fonction permettant de supprimer un element de la BDD
 @router.delete("/one/{id}", response_model=dict)
-def delete_one_eleve(id):
+def delete_one_eleve(id: str):
     results = eleve_service.delete_one(id)
     return {"deleted_count": results.deleted_count}
 

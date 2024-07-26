@@ -44,7 +44,7 @@ def update_many(filter, newValue):
 
 # Fonction permettant de supprimer un element de la BDD
 def delete_one(id: str):
-    results = collection.delete_one(ObjectId(id))
+    results = collection.delete_one({"_id": ObjectId(id)})
     return results
 
 # Fonction permettant de supprimer plusieurs elements de la BDD
