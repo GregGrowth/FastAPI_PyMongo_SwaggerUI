@@ -1,6 +1,6 @@
 from db import database
 from bson import ObjectId
-
+from typing import List, Dict
 # Selectionner la base de donnees (BDD)
 collection = database["professeur"]
 
@@ -80,3 +80,10 @@ def delete_one(id: str):
 def delete_many(filter: dict):
     results = collection.delete_many(filter)
     return results
+
+# Service pour la Q3
+
+def get_all_Q3() -> List[Dict]:
+    results = collection.find({}, {"_id": 0})
+    professeurs = list(results)  # Convertir en liste pour une meilleure manipulation
+    return professeurs
