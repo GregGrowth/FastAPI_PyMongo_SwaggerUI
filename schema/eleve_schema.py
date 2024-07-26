@@ -7,9 +7,9 @@ class EleveInsertSchema(BaseModel):
     nom: str = constr(min_length=1)
     prenom: str = constr(min_length=1)
     classe: str = constr(min_length=1, max_length=1)
-    date_naissance: Optional[str]
-    adresse: Optional[str]
-    sexe: Optional[str]
+    date_naissance: Optional[str] = None
+    adresse: Optional[str] = None
+    sexe: Optional[str] = None
 
 # Schema pour structurer les donnees pour la fonction Update
 class EleveUpdateSchema(BaseModel):
