@@ -57,12 +57,10 @@ def create_one(item: dict):
     results = collection.insert_one(item)
     return results
 
-
 # Fonction permettant d'inserer plusieurs elements de la BDD
 def create_many(item: dict):
     results = collection.insert_many(item)
     return results
-
 
 # Fonction permettant de mettre a jour le nom d'une classe de la BDD
 def update_one(id_classe: str, update: dict):
