@@ -72,4 +72,4 @@ Fichier .env : variables d'environnement pour la configuration.
 
  Tapez : uvicorn main:app --reload
  Cliquez : http://127.0.0.1:8000
- Ajoutez à l’url : http://127.0.0.1:8000/docs
+ Ajoutez à l’url "/docs" pour obtenir : http://127.0.0.1:8000/docs
