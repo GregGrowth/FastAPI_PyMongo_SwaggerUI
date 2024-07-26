@@ -60,12 +60,14 @@ def update_many_eleve(item: List[EleveUpdateSchema]):
     return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de supprimer un element de la BDD
-@router.delete("/one/{id}")
+@router.delete("/one/{id}", response_model=dict)
 def delete_one_eleve(id):
-    return eleve_service.delete_one(id)
+    results = eleve_service.delete_one(id)
+    return {"deleted_count": results.deleted_count}
 
 # Ajout d'une fonction permettant de supprimer plusieurs elements de la BDD
-@router.delete("/many/{item}")
+@router.delete("/many/{item}", response_model=dict)
 def delete_many_eleve(item):
-    return eleve_service.delete_many(item)
+    results = eleve_service.delete_many(item)
+    return {"deleted_count": results.deleted_count}
 
