@@ -46,20 +46,22 @@ def update_one_matiere(id_matiere, update: MatiereUpdateSchema):
 
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
 @router.patch("/many", response_model=dict)
-def update_many_matiere(item: List[MatiereUpdateSchema]):
+def update_many_matiere(filter: dict, item: List[MatiereUpdateSchema]):
     item_dict = []
     # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
     for i in range(len(item)):
         item_dict.append(item[i].dict(exclude_unset=True))
-    results = matiere_service.update_many(item_dict)
+    results = matiere_service.update_many(filter, item_dict)
     return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de supprimer un element de la BDD
-@router.delete("/one/{id}")
+@router.delete("/one/{id}", response_model=dict)
 def delete_one_matiere(id):
-    return matiere_service.delete_one(id)
+    results = matiere_service.delete_one(id)
+    return {"deleted_count": results.deleted_count}
 
 # Ajout d'une fonction permettant de supprimer plusieurs elements de la BDD
-@router.delete("/many/{item}")
+@router.delete("/many/{item}", response_model=dict)
 def delete_many_matiere(item):
-    return matiere_service.delete_many(item)
+    results = matiere_service.delete_many(item)
+    return {"deleted_count": results.deleted_count}
