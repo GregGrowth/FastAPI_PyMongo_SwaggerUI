@@ -50,13 +50,13 @@ def update_one_eleve(id_eleve, update: EleveUpdateSchema):
     return {"modified_count": results.modified_count}
 
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many", response_model=dict)
-def update_many_eleve(item: List[EleveUpdateSchema]):
+@router.patch("/many/{filter}", response_model=dict)
+def update_many_eleve(filter: dict, item: List[EleveUpdateSchema]):
     item_dict = []
     # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
     for i in range(len(item)):
         item_dict.append(item[i].dict(exclude_unset=True))
-    results = eleve_service.update_many(item_dict)
+    results = eleve_service.update_many(filter, item_dict)
     return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de supprimer un element de la BDD

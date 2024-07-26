@@ -49,26 +49,23 @@ def update_one_note(id_note: str, update: NoteUpdateSchema):
     return {"modified_count": results.modified_count}
 
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many", response_model=dict)
-def update_many_note(item: List[NoteUpdateSchema]):
+@router.patch("/many/{filter}", response_model=dict)
+def update_many_note(filter: dict, item: List[NoteUpdateSchema]):
     item_dict = []
     # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
     for i in range(len(item)):
         item_dict.append(item[i].dict(exclude_unset=True))
-    results = note_service.update_many(item_dict)
+    results = note_service.update_many(filter, item_dict)
     return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de supprimer un element de la BDD
-@router.delete("/one/{id}")
+@router.delete("/one/{id}", response_model=dict)
 def delete_one_note(id):
-    return note_service.delete_one(id)
+    results = note_service.delete_one(id)
+    return {"deleted_count": results.deleted_count}
 
 # Ajout d'une fonction permettant de supprimer plusieurs elements de la BDD
-@router.delete("/many/{item}")
+@router.delete("/many/{item}", response_model=dict)
 def delete_many_note(item):
-    return note_service.delete_many(item)
-
-@router.get("/par_professeur/{professeur_id}")
-def get_eleve_notes_par_prof(professeur_id: str):
-    resultats = note_service.get_eleve_notes_par_prof(professeur_id)
-    return {"resultats": resultats}
+    results = note_service.delete_many(item)
+    return {"deleted_count": results.deleted_count}

@@ -35,12 +35,10 @@ def update_one(id_eleve: str, update: dict):
     results = collection.update_one({"id": id_eleve}, {"$set": update})
     return results
 
-"""
 # Fonction permettant de mettre a jour plusieurs elements de la BDD
 def update_many(filter, newValue):
     results = collection.update_many(filter, newValue)
     return results
-"""
 
 # Fonction permettant de supprimer un element de la BDD
 def delete_one(id: str):
