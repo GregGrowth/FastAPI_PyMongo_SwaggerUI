@@ -49,7 +49,7 @@ def update_one_professeur(id_prof, update: ProfesseurUpdateSchema):
     return {"modified_count": results.modified_count}
 
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many/{filter}", response_model=dict)
+@router.patch("/many", response_model=dict)
 def update_many_professeur(filter: dict, item: List[ProfesseurUpdateSchema]):
     item_dict = []
     # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
