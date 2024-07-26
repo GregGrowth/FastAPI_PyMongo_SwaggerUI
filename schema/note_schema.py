@@ -5,7 +5,7 @@ from typing import Optional
 class NoteInsertSchema(BaseModel):
     idnotes: str = constr(min_length=1, max_length=1)
     date_saisie: Optional[str] = None
-    ideleve: str = constr(min_length=1, max_length=1)
+    ideleve: str = constr(min_length=1, max_length=3)
     idclasse: Optional[str] = None
     idmatiere: Optional[str] = None
     idprof: Optional[str] = None

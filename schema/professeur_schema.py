@@ -6,7 +6,6 @@ class ProfesseurInsertSchema(BaseModel):
     id: str = constr(min_length=1, max_length=1)
     nom: str = constr(min_length=1)
     prenom: str = constr(min_length=1)
-    #classe: Optional[str] = None
     date_naissance: Optional[str] = None
     adresse: Optional[str] = None
     sexe: Optional[str] = None
@@ -15,15 +14,6 @@ class ProfesseurInsertSchema(BaseModel):
 class ProfesseurUpdateSchema(BaseModel):
     nom: Optional[str] = None
     prenom: Optional[str] = None
-    #classe: Optional[str] = None
     date_naissance: Optional[str] = None
     adresse: Optional[str] = None
     sexe: Optional[str] = None
-
-class Q1(BaseModel):
-    id: str
-    nom: str
-    prenom: str
-    date_naissance: str
-    adresse: str
-    sexe: str
