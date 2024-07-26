@@ -9,7 +9,7 @@ Mélissa KUNEGEL
 Lucas FANGET
 Grégoire DELCROIX
 
-## Coordinateur etb Suivi
+## Coordinateur et Suivi
 
 Robin HOTTON
 Christophe GERMAIN
