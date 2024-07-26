@@ -1,6 +1,5 @@
 from db import database
 from bson import ObjectId
-from typing import List,Dict
 
 # Selectionner la base de donnees (BDD)
 collection = database["eleve"]
@@ -26,7 +25,7 @@ def create_one(item: dict):
     return results
 
 # Fonction permettant d'inserer plusieurs elements de la BDD
-def create_many(item: dict):
+def create_many(item):
     results = collection.insert_many(item)
     return results
 

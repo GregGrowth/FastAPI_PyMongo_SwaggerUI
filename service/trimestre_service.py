@@ -20,7 +20,7 @@ def create_one(item: dict):
     return results
 
 # Fonction permettant d'inserer plusieurs elements de la BDD
-def create_many(item: dict):
+def create_many(item):
     results = collection.insert_many(item)
     return results
 
