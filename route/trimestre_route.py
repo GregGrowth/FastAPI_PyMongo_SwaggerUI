@@ -44,21 +44,23 @@ def update_one_trimestre(id_trimestre, update: TrimestreUpdateSchema):
     return {"modified_count": results.modified_count}
 
 # Ajout d'une fonction permettant de mettre a jour plusieurs elements de la BDD
-@router.patch("/many", response_model=dict)
-def update_many_trimestre(item: List[TrimestreUpdateSchema]):
+@router.patch("/many/{filter}", response_model=dict)
+def update_many_trimestre(filter: dict, item: List[TrimestreUpdateSchema]):
     item_dict = []
     # On exclut les donnees de type None (= donnees non renseignees) dans chaque element
     for i in range(len(item)):
         item_dict.append(item[i].dict(exclude_unset=True))
-    results = trimestre_service.update_many(item_dict)
+    results = trimestre_service.update_many(filter, item_dict)
     return {"acknowledged": results.acknowledged}
 
 # Ajout d'une fonction permettant de supprimer un element de la BDD
-@router.delete("/one/{id}")
+@router.delete("/one/{id}", response_model=dict)
 def delete_one_trimestre(id):
-    return trimestre_service.delete_one(id)
+    results = trimestre_service.delete_one(id)
+    return {"deleted_count": results.deleted_count}
 
 # Ajout d'une fonction permettant de supprimer plusieurs elements de la BDD
-@router.delete("/many/{item}")
+@router.delete("/many/{item}", response_model=dict)
 def delete_many_trimestre(item):
-    return trimestre_service.delete_many(item)
+    results = trimestre_service.delete_many(item)
+    return {"deleted_count": results.deleted_count}
