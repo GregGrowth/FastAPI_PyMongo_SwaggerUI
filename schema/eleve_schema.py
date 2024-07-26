@@ -19,13 +19,3 @@ class EleveUpdateSchema(BaseModel):
     date_naissance: Optional[str] = None
     adresse: Optional[str] = None
     sexe: Optional[str] = None
-
-# Ajout pour Q3
-class Q3(BaseModel):
-    id: str
-    nom: str
-    prenom: str
-    classe: str
-    date_naissance: str
-    adresse: str
-    sexe: str
